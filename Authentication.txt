@@ -1,0 +1,73 @@
+Backend
+ |--- controllers
+ |      |-- signup.js
+ |      |-- login.js
+ |      |-- logout.js
+ |
+ |--- routes
+ |      |-- router.js
+ |
+ |--- database
+ |      |-- data.js
+ |
+ |--- index.js
+ |--- .gitignore
+
+
+index.js 
+--------
+This is the main file of the application. It is responsible for starting the server and connecting to the
+database. It also includes the routes for the application.
+const express = require("express");
+const cors = require("cors")
+const PORT = process.env.PORT || 3000;
+const routers = require("./routes/router")
+
+const app = express();
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+app.use(cors());
+
+app.use("/api" , routers)
+
+app.listen(PORT, () => {
+    console.log(`Server is running on port ${PORT}`);
+});
+
+data.js
+-------
+connect to  data base 
+
+const mongoose = require("mongoose");
+
+mongoose.connect('mongodb+srv://kalpraj51:dYt7CIyDXwi6gZbL@cluster0.qfsnyra.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0', { useNewUrlParser: true, useUnifiedTopology: true })
+.then(() => console.log("Connected to Database"))
+.catch((error) => console.log("Error in Connecting to Database:", error));
+
+const User = mongoose.model("user", {
+  name: String,
+  username: String,
+  password: String,
+});
+
+module.exports = User;
+
+router.js
+---------
+This file contains the routes for the application. It is responsible for handling the requests and responses from the
+client. It also includes the logic for the application.
+const express = require("express");
+const SingUp = require("../controllers/Signup");
+const login = require("../controllers/Signup");
+
+const router = express.Router()
+
+router.post("/signup" , SingUp)
+router.post("/login" , login)
+
+module.exports = router;
+
+controllers
+---------
+This file contains the controller functions for the application. It is responsible for handling the requests and responses from 
+the client. It also includes the logic for the application.
