@@ -2,12 +2,11 @@ const bcrypt = require("bcrypt")
 const User = require("../database/data");
 
 async function SingUp(req, res) {
-    const { name, username, password } = req.body;
+    const { name, email, password } = req.body;
 
     try {
-        
         const hashPassword = await bcrypt.hash(password,10);
-        const newUser = await User.create({name, username, password: hashPassword});
+        const newUser = await User.create({name, email, password: hashPassword});
         
         await newUser.save();
 

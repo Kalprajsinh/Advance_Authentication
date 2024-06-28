@@ -7,7 +7,7 @@ mongoose.connect(process.env.Mongo_Url, { useNewUrlParser: true, useUnifiedTopol
 
 const User = mongoose.model("user", {
   name: String,
-  username: String,
+  email: String,
   password: String,
 });
 

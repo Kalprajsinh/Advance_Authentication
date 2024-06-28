@@ -2,10 +2,10 @@ const bcrypt = require("bcrypt");
 const User = require("../database/data");
 
 async function Login(req, res) {
-    const { username, password } = req.body;
+    const { email, password } = req.body;
 
     try {
-        const user = await User.findOne({ username });
+        const user = await User.findOne({ email });
 
         if (!user) {
             return res.status(404).send("User not found");
@@ -13,9 +13,6 @@ async function Login(req, res) {
 
         // Compare passwords
         const passwordMatch = await bcrypt.compare(password, user.password);
-
-        console.log("User:", user);
-        console.log("Stored Hashed Password:", user.password);
         console.log("Password Match:", passwordMatch);
 
         if (!passwordMatch) {
