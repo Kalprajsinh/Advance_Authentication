@@ -9,6 +9,7 @@ const User = mongoose.model("user", {
   name: String,
   email: String,
   password: String,
+  refreshToken: String
 });
 
 module.exports = User;

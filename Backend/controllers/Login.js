@@ -1,5 +1,26 @@
 const bcrypt = require("bcrypt");
+const jwt = require("jsonwebtoken");
 const User = require("../database/data");
+const cookieParser = require('cookie-parser');
+const express = require('express');
+const app = express();
+require('dotenv').config();
+
+// Secret keys for JWT (store these securely, e.g., in environment variables)
+const ACCESS_TOKEN_SECRET = process.env.ACCESS_TOKEN_SECRET;
+const REFRESH_TOKEN_SECRET = process.env.REFRESH_TOKEN_SECRET;
+
+// Function to generate tokens
+function generateAccessToken(user) {
+    return jwt.sign({ id: user._id, email: user.email }, ACCESS_TOKEN_SECRET, { expiresIn: '5m' });
+}
+
+function generateRefreshToken(user) {
+    return jwt.sign({ id: user._id, email: user.email }, REFRESH_TOKEN_SECRET, { expiresIn: '30d' });
+}
+
+app.use(cookieParser());
+app.use(express.json());
 
 async function Login(req, res) {
     const { email, password } = req.body;
@@ -18,6 +39,18 @@ async function Login(req, res) {
         if (!passwordMatch) {
             return res.status(401).send("Invalid password");
         }
+
+        // Generate tokens
+        const accessToken = generateAccessToken(user);
+        const refreshToken = generateRefreshToken(user);
+
+        // Store the refresh token (e.g., in the database)
+        user.refreshToken = refreshToken;
+        await user.save();
+
+        // Set cookies
+        res.cookie('accessToken', accessToken, { httpOnly: true, secure: true, sameSite: 'Strict' });
+        res.cookie('refreshToken', refreshToken, { httpOnly: true, secure: true, sameSite: 'Strict' });
 
         res.status(200).send("Login successful");
     } catch (err) {
