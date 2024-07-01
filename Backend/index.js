@@ -6,8 +6,10 @@ const routers = require("./routes/router")
 const app = express();
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-app.use(cors());
-
+app.use(cors({
+    origin: 'http://localhost:5173',
+    credentials: true // Enable credentials
+  }));
 app.use("/aa" , routers)
 
 app.all('*', (req, res) => {

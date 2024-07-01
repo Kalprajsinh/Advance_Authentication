@@ -6,17 +6,15 @@ const express = require('express');
 const app = express();
 require('dotenv').config();
 
-// Secret keys for JWT (store these securely, e.g., in environment variables)
 const ACCESS_TOKEN_SECRET = process.env.ACCESS_TOKEN_SECRET;
 const REFRESH_TOKEN_SECRET = process.env.REFRESH_TOKEN_SECRET;
 
-// Function to generate tokens
 function generateAccessToken(user) {
     return jwt.sign({ id: user._id, email: user.email }, ACCESS_TOKEN_SECRET, { expiresIn: '5m' });
 }
 
 function generateRefreshToken(user) {
-    return jwt.sign({ id: user._id, email: user.email }, REFRESH_TOKEN_SECRET, { expiresIn: '30d' });
+    return jwt.sign({ id: user._id, email: user.email }, REFRESH_TOKEN_SECRET, { expiresIn: '10d' });
 }
 
 app.use(cookieParser());
