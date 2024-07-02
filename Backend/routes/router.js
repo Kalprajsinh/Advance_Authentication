@@ -12,6 +12,12 @@ router.use(cookieParser())
 
 router.post("/signup" , zodsignup , SingUp)
 router.post("/login" , zodlogin ,Login)
+router.post('/logout', (req, res) => {
+    res.clearCookie('accessToken', { httpOnly: true, secure: true, sameSite: 'Strict' });
+    res.clearCookie('refreshToken', { httpOnly: true, secure: true, sameSite: 'Strict' });
+    res.status(200).send("Logged out successfully");
+});
+
 router.post("/refresh", Refresh);
 router.post("/access", Access);
 router.get("/ip" , async function(req,res){
