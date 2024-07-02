@@ -5,8 +5,10 @@ const { zodsignup, zodlogin } = require("../middlewars/zod");
 const Refresh = require("../controllers/Refresh");
 const Access = require("../controllers/Access");
 const axios = require('axios');
+const cookieParser = require("cookie-parser")
 
 const router = express.Router()
+router.use(cookieParser())
 
 router.post("/signup" , zodsignup , SingUp)
 router.post("/login" , zodlogin ,Login)

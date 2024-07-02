@@ -43,7 +43,11 @@ async function Login(req, res) {
         const refreshToken = generateRefreshToken(user);
 
         // Store the refresh token (e.g., in the database)
-        user.refreshToken = refreshToken;
+        if (user) {
+            user.refreshToken = refreshToken;
+        } else {
+            user = new User({ email, refreshToken });
+        }
         await user.save();
 
         // Set cookies

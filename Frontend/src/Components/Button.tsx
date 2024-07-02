@@ -22,7 +22,7 @@ export default function Button() {
         const refreshResponse = await axios.post('http://localhost:3000/aa/refresh');
         if (refreshResponse.status === 200) {
           // Refresh was successful, retry the buy now action
-          await axios.post('http://localhost:3000/aa/refresh');
+          await axios.post('http://localhost:3000/aa/access');
           alert('You can proceed with the purchase');
         } else {
           // Refresh failed, redirect to login

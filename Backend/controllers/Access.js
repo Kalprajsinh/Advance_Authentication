@@ -1,10 +1,10 @@
-const jwt = require("jsonwebtoken");
+const jwt = require('jsonwebtoken');
 require('dotenv').config();
 
 const ACCESS_TOKEN_SECRET = process.env.ACCESS_TOKEN_SECRET;
 
-async function Access (req, res) {
-    const token = req.cookie.accessToken;
+async function Access(req, res) {
+    const token = req.cookies.accessToken;
 
     if (!token) {
         return res.sendStatus(401);
