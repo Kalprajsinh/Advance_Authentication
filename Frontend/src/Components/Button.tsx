@@ -1,10 +1,11 @@
-import { BrowserRouter as Router, Route, Routes, Link, useNavigate } from 'react-router-dom';
+import { BrowserRouter as Router, Route, Routes, Link, useNavigate, useLocation} from 'react-router-dom';
 import axios from 'axios';
 
 axios.defaults.withCredentials = true;
 
 export default function Button() {
   const navigate = useNavigate();
+  const location = useLocation(); 
 
   function getCookieValue(cookieName: string) {
     const cookies = document.cookie.split(';');
@@ -58,6 +59,10 @@ export default function Button() {
     } catch (error) {
       console.error('Error signing up:', error);
     }
+  }
+
+  if (location.pathname === '/login' || location.pathname === '/signup') {
+    return null;
   }
 
   return (

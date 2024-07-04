@@ -2,8 +2,10 @@
 import Button from "./Components/Button";
 import LoginForm from "./Components/LoginForm";
 import Main from "./Components/Main"
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import { BrowserRouter, Routes, Route} from 'react-router-dom';
 import SignUpForm from "./Components/SignUpForm";
+import Loginbackend from "./Components/Loginbackend";
+import Signupbackend from "./Components/Sigmupbackend";
 
 
 
@@ -59,6 +61,8 @@ function App() {
         <Route path="/" element={<Main />} />
         <Route path="/login" element={<LoginForm />} />
         <Route path="/signup" element={<SignUpForm />} />
+        <Route path="/login/backend" element={<Loginbackend />} />
+        <Route path="/signup/backend" element={<Signupbackend />} />
       </Routes>
       <br /><br />
       <div className="flex justify-center gap-5 mt-7">

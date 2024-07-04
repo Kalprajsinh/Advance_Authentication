@@ -27,16 +27,16 @@ function Main() {
     <br />
     <div className='overflow-y-scroll h-5/6 overflow-x-hidden'>
 
-          <div className='flex'>
+          <div className='flex text-xs sm:text-base'>
           &gt; User Loggedin - <p className='text-red-500'>&nbsp;False</p>
           </div>
-          <div>
+          <div className='text-xs sm:text-base'>
           {ip && (
             <>&gt; device IP address - {ip}</>
           )}  
           </div>
           <br /><br />
-          <div className="text-base text-blue-300 flex items-center gap-2 select-none">To see more backend process, please Login or Signup<p className='text-3xl'>→</p></div>
+          <div className="text-xs sm:text-base text-blue-300 flex items-center gap-2 select-none">To see more backend process, please Login or Signup<p className='text-2xl'>→</p></div>
           <br />
     </div>
     </div>
