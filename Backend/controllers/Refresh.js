@@ -21,7 +21,7 @@ async function Refresh (req, res) {
         }
 
         jwt.verify(rtoken, REFRESH_TOKEN_SECRET, (err, user) => {
-            if (err) return res.status(403).send("Invalid refresh token");
+            if (err) return res.status(400).send("Invalid refresh token");
 
             const accessToken = jwt.sign({ id: user.id, email: user.email }, ACCESS_TOKEN_SECRET, { expiresIn: '5m' });
             res.cookie('accessToken', accessToken, { httpOnly: true, secure: true, sameSite: 'Strict' });

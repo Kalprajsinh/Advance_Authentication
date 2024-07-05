@@ -51,9 +51,12 @@ async function Login(req, res) {
         await user.save();
 
         // Set cookies
-        res.cookie('accessToken', accessToken, { httpOnly: true, secure: true, sameSite: 'Strict' });
-        res.cookie('refreshToken', refreshToken, { httpOnly: true, secure: true, sameSite: 'Strict' });
-
+        try {
+            res.cookie('accessToken', accessToken, { httpOnly: true, secure: true, sameSite: 'Strict' });
+            res.cookie('refreshToken', refreshToken, { httpOnly: true, secure: true, sameSite: 'Strict' });     
+        } catch (error) {
+            if (err) return res.sendStatus(403).send("error in sent Token try again")
+        }
         res.status(200).send("Login successful");
     } catch (err) {
         console.error("Error signing in:", err);

@@ -2,21 +2,57 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 
-function LoginForm(){
+interface Props {
+  setloginsteps: React.Dispatch<React.SetStateAction<string[]>>;
+}
+
+const LoginForm: React.FC<Props> = ({ setloginsteps }) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const navigate = useNavigate();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    try {
-      const response = await axios.post('http://localhost:3000/aa/login', { email, password });
-      console.log(response.data);
+    const steps = []; 
+  try {
+    const response = await axios.post('http://localhost:3000/aa/login', { email, password });
+    steps.push('📤 Posted user information to backend /login Router');
+
+    if (response.status === 404) {
+      steps.push('❌ User not found');
+      console.error('User not found');
+    } else if (response.status === 401) {
+      steps.push('❌ Invalid password');
+      console.error('Invalid password');
+    } else if (response.status === 403) {
+      steps.push('⚠️ Error in sent token, try again');
+      console.error('Error in sent token, try again');
+    } else if (response.status === 200) {
+      steps.push('✅ Zod Schema Validation');
+      steps.push('🔌 Connected to database');
+      steps.push('🔍 User found in database');
+      steps.push('🔐 Password matched using Blowfish algo');
+      steps.push('🔑 Generated JWT access token successfully');
+      steps.push('🔑 Generated JWT refresh token successfully');
+      steps.push('📂 Stored refresh token in database');
+      steps.push('🍪 Sent cookie to client side with httpOnly: true, secure: true');
+      steps.push('🔍 Checked user token');
+      steps.push('☑️ User verified');
+      steps.push('✅ Login successful');
       // Redirect to home page after successful login
       navigate('/login/backend');
-    } catch (error) {
-      console.error('Error logging in:', error);
+    } else if (response.status === 500) {
+      steps.push('❌ Error signing in');
+      console.error('Error signing in');
     }
+  } catch (error) {
+    steps.push('❌ Error logging in');
+    console.error('Error logging in:', error);
+  }
+
+  // Optionally, you can display the steps to the user here
+  // For example, by setting them in a state and showing them in the UI
+  setloginsteps(steps);
   };
 
   return (
