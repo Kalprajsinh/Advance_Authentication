@@ -4,26 +4,14 @@ import { useState } from 'react';
 
 axios.defaults.withCredentials = true;
 interface Props {
-  setloginsteps: React.Dispatch<React.SetStateAction<string[]>>;
+  setlbuysteps: React.Dispatch<React.SetStateAction<string[]>>;
 }
 
-const Button: React.FC<Props> = ({ setloginsteps }) => {
+const Button: React.FC<Props> = ({ setlbuysteps }) => {
   const navigate = useNavigate();
   const location = useLocation(); 
   const [user, setuser] = useState(null);
   const steps: string[] = [];
-  steps.push('📤 Posted user information to backend /login Router');
-  steps.push('✅ Zod Schema Validation');
-  steps.push('🔌 Connected to database');
-  steps.push('🔍 User found in database');
-  steps.push('🔐 Password matched using Blowfish algo');
-  steps.push('🔑 Generated JWT access token successfully');
-  steps.push('🔑 Generated JWT refresh token successfully');
-  steps.push('📂 Stored refresh token in database');
-  steps.push('🍪 Sent cookie to client side with httpOnly: true, secure: true');
-  steps.push('🔍 Checked user token');
-  steps.push('☑️ User verified');
-  steps.push('✅ Login successful');
 
   function getCookieValue(cookieName: string) {
     const cookies = document.cookie.split(';');
@@ -33,7 +21,7 @@ const Button: React.FC<Props> = ({ setloginsteps }) => {
             return decodeURIComponent(value);
         }
     }
-    steps.push('Check cookie value');
+    steps.push('☑️ Check cookie value');
     return false;
 }
 
@@ -96,7 +84,7 @@ const Button: React.FC<Props> = ({ setloginsteps }) => {
       } else {
           console.log('cookie not found'); // Log a message indicating cookie not found
       }
-      setloginsteps(steps);
+      setlbuysteps(steps);
   };
 
   async function Logout(){

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import Button from './Components/Button';
 import LoginForm from './Components/LoginForm';
 import Main from './Components/Main';
@@ -10,6 +10,7 @@ import Signupbackend from './Components/Sigmupbackend';
 function App() {
   const [steps, setSteps] = useState<string[]>([]); 
   const [loginsteps, setloginsteps] = useState<string[]>([]); 
+  const [buysteps, setlbuysteps] = useState<string[]>([]); 
 
   return (
     <>
@@ -26,13 +27,13 @@ function App() {
           <Routes>
             <Route path="/" element={<Main />} />
             <Route path="/login" element={<LoginForm setloginsteps={setloginsteps} />} />
-            <Route path="/login/backend" element={<Loginbackend loginsteps={loginsteps} />} />
+            <Route path="/login/backend" element={<Loginbackend loginsteps={loginsteps} buysteps={buysteps} />} />
             <Route path="/signup" element={<SignUpForm setSteps={setSteps} />} />
             <Route path="/signup/backend" element={<Signupbackend steps={steps} />} />
           </Routes>
           <br /><br />
           <div className="flex justify-center gap-5 mt-7">
-            <Button setloginsteps={setloginsteps} />
+            <Button setlbuysteps={setlbuysteps} />
           </div>
         </BrowserRouter>
       </div>

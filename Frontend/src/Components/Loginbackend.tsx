@@ -2,10 +2,12 @@ import React, { useEffect, useState, useRef } from 'react';
 
 interface Props {
   loginsteps: string[];
+  buysteps: string[];
 }
 
-const Loginbackend: React.FC<Props> = ({ loginsteps }) => {
+const Loginbackend: React.FC<Props> = ({ loginsteps,buysteps }) => {
   const [displayedSteps, setDisplayedSteps] = useState<string[]>([]);
+  const [displayedSteps2, setDisplayedSteps2] = useState<string[]>([]);
   const scrollContainerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -36,6 +38,34 @@ const Loginbackend: React.FC<Props> = ({ loginsteps }) => {
     }
   }, [displayedSteps]);
 
+  useEffect(() => {
+    let timeouts: number[] = [];
+
+    const displaySteps2 = () => {
+      buysteps.forEach((step, index) => {
+        const timeout = window.setTimeout(() => {
+          setDisplayedSteps2(prevSteps => [...prevSteps, step]);
+        }, (index + 1) * 900);
+        timeouts.push(timeout);
+      });
+    };
+
+    displaySteps2();
+
+    return () => {
+      timeouts.forEach(timeout => {
+        window.clearTimeout(timeout);
+      });
+      setDisplayedSteps2([]);
+    };
+  }, [buysteps]);
+
+  useEffect(() => {
+    if (scrollContainerRef.current) {
+      scrollContainerRef.current.scrollTop = scrollContainerRef.current.scrollHeight;
+    }
+  }, [displayedSteps2]);
+
   return (
     <>
       <div>
@@ -45,6 +75,11 @@ const Loginbackend: React.FC<Props> = ({ loginsteps }) => {
             <br />
             <div ref={scrollContainerRef} className='overflow-y-scroll h-64 overflow-x-hidden'>
               {displayedSteps.map((step, index) => (
+                <div key={index} className='flex text-xs sm:text-base'>
+                  &gt; {step}
+                </div>
+              ))}
+              {displayedSteps2.map((step, index) => (
                 <div key={index} className='flex text-xs sm:text-base'>
                   &gt; {step}
                 </div>

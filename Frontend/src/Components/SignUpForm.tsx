@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import Alert from '@mui/material/Alert';
 
 interface Props {
   setSteps: React.Dispatch<React.SetStateAction<string[]>>;
@@ -52,12 +53,32 @@ const SignUpForm: React.FC<Props> = ({ setSteps }) => {
     setSteps(steps);
   };
 
+  const [err,seterr] = useState("");
+
   return (
     <div className=' flex justify-center h-2/3 items-center'>
       <div className='w-1/2'>
+      <Alert className={err === "" ? 'invisible' : ''} severity="error">{err}</Alert>
+      <br /><br />
         <h1 className='text-3xl font-bold text-white'>Create new account.</h1>
         <h2 className='flex text-base font-bold text-gray-200'>Already have account?&nbsp;<a onClick={() => navigate("/login")} className='text-blue-500 underline cursor-pointer'>Login</a></h2><br /><br />
-        <form onSubmit={handleSubmit}>
+        <form onSubmit={(e) => {
+            e.preventDefault(); // Prevent default form submission
+            
+            if (password.length < 6) {
+              seterr("Password length must be at least 6 characters");
+              setTimeout(() => {
+                seterr("");
+              } , 3000)
+            } else if (password !== confirmPassword) {
+              seterr("Passwords do not match");
+              setTimeout(() => {
+                seterr("");
+              } , 3000)
+            } else {
+              handleSubmit 
+            }
+          }}>
           <div className='border gap-4 rounded-lg h-10'>
             <label className='text-gray-500 font-mono ml-4'><i className="fa fa-user text-2xl"></i></label>&nbsp;&nbsp;&nbsp;
             <input className='bg-transparent text-white font-bold text-lg w-8/12 h-full' placeholder="Enter Name" type="text" value={name} onChange={(e) => setname(e.target.value)} required />
