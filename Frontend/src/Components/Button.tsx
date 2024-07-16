@@ -33,10 +33,11 @@ const Button: React.FC<Props> = ({ setlbuysteps }) => {
           steps.push('🍪 Posted cookie to backend /access Router');
     
           if (response.status === 401) {
-            steps.push('❌ Token not retrieved, please retry...');
+            steps.push('❌ Access Token not retrieved');
           } else if (response.status === 403) {
             steps.push('⚠️ Error in verifying token, please retry...');
-          } else if (response.status === 200) {
+          } 
+          if (response.status === 200) {
             setuser(response.data);
             console.log(response.data.email);
             steps.push('🔑 Retrieved access token secret key');
@@ -50,6 +51,7 @@ const Button: React.FC<Props> = ({ setlbuysteps }) => {
           try {
             // Access token is invalid, attempt to refresh it
             const refreshResponse = await axios.post('http://localhost:3000/aa/refresh');
+            steps.push('❌ Access Token not retrieved');
             steps.push('♻️ access token expire, posted cookie to backend /refresh Router');
             if (refreshResponse.status === 200) {
               steps.push('🔑 Retrieved refresh token secret key');
@@ -58,10 +60,9 @@ const Button: React.FC<Props> = ({ setlbuysteps }) => {
               steps.push('📂 Found refresh token in database');
               steps.push('🔄 Generated new JWT access token successfully');
               steps.push('🍪 Sent cookie to client side with httpOnly: true, secure: true');
-              steps.push('👤 User is valid');
+              steps.push('👤 User is valid ✅');
               // Refresh was successful, retry the buy now action
               await axios.post('http://localhost:3000/aa/access');
-              alert('You can proceed with the purchase');
             } else if (refreshResponse.status === 401) {
               steps.push('❌ Refresh token not retrieved, please retry...');
               console.error('Refresh token not retrieved');
@@ -77,8 +78,10 @@ const Button: React.FC<Props> = ({ setlbuysteps }) => {
             }
           } catch (refreshError) {
             console.error('Refresh error:', refreshError);
+            steps.push('❌ Access Token not retrieved !');
+            steps.push('❌ refresh token not retrieved !');
             // Refresh token is invalid, redirect to login
-            // navigate('/login');
+            navigate('/login');
           }
         }
       } else {
@@ -112,12 +115,6 @@ const Button: React.FC<Props> = ({ setlbuysteps }) => {
             SignUp
           </button>
         </Link>
-          <button type="button"  onClick={Logout} className="text-white bg-gradient-to-r from-blue-500 via-blue-600 to-blue-700 hover:bg-gradient-to-br focus:ring-1 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 dark:shadow-lg dark:shadow-blue-950 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2">
-            Logout
-          </button>
-        <button type="button" onClick={handleBuyNowClick} className="text-white bg-gradient-to-r from-green-500 via-green-600 to-green-700 hover:bg-gradient-to-br focus:ring-1 focus:outline-none focus:ring-green-300 dark:focus:ring-green-800 dark:shadow-lg font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2">
-          Buy Now
-        </button>
       </header>
     </div>
   );
@@ -129,6 +126,9 @@ else if (location.pathname == '/login/backend') {
         <button type="button" onClick={handleBuyNowClick} className="text-white bg-gradient-to-r from-green-500 via-green-600 to-green-700 hover:bg-gradient-to-br focus:ring-1 focus:outline-none focus:ring-green-300 dark:focus:ring-green-800 dark:shadow-lg font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2">
           Buy Now
         </button>
+        <button type="button"  onClick={Logout} className="text-white bg-gradient-to-r from-blue-500 via-blue-600 to-blue-700 hover:bg-gradient-to-br focus:ring-1 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 dark:shadow-lg dark:shadow-blue-950 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2">
+            Logout
+          </button>
       </header>
     </div>
   );

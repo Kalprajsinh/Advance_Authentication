@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import Alert from '@mui/material/Alert';
 
 interface Props {
   setloginsteps: React.Dispatch<React.SetStateAction<string[]>>;
@@ -18,14 +19,23 @@ const LoginForm: React.FC<Props> = ({ setloginsteps }) => {
     const response = await axios.post('http://localhost:3000/aa/login', { email, password });
     steps.push('📤 Posted user information to backend /login Router');
 
-    if (response.status === 404) {
-      steps.push('❌ User not found');
+    if (response.status === 201) {
+      seterr("User not found");
+      setTimeout(() => {
+        seterr("");
+      } , 3000)
       console.error('User not found');
-    } else if (response.status === 401) {
-      steps.push('❌ Invalid password');
+    } else if (response.status === 202) {
+      seterr("Invalid password");
+      setTimeout(() => {
+        seterr("");
+      } , 3000)
       console.error('Invalid password');
-    } else if (response.status === 403) {
-      steps.push('⚠️ Error in sent token, try again');
+    } else if (response.status === 203) {
+      setwor("Error in sent token, try again");
+      setTimeout(() => {
+        seterr("");
+      } , 3000)
       console.error('Error in sent token, try again');
     } else if (response.status === 200) {
       steps.push('✅ Zod Schema Validation');
@@ -43,10 +53,18 @@ const LoginForm: React.FC<Props> = ({ setloginsteps }) => {
       navigate('/login/backend');
     } else if (response.status === 500) {
       steps.push('❌ Error signing in');
+      navigate('/login/backend');
       console.error('Error signing in');
     }
   } catch (error) {
     steps.push('❌ Error logging in');
+    if(password.length < 6)
+    {
+      seterr("Password length must be at least 6 characters");
+      setTimeout(() => {
+        seterr("");
+      } , 3000);
+    }
     console.error('Error logging in:', error);
   }
 
@@ -55,9 +73,20 @@ const LoginForm: React.FC<Props> = ({ setloginsteps }) => {
   setloginsteps(steps);
   };
 
+  const [err,seterr] = useState("");
+  const [wor,setwor] = useState("");
+
   return (
     <div className=' flex justify-center h-2/3 items-center'>
     <div className='w-1/2'>
+    <div style={{ display: err === "" ? 'none' : '' }}>
+      <Alert severity="error">{err}</Alert>
+      <br /><br /> 
+      </div>
+    <div style={{ display: wor === "" ? 'none' : '' }}>
+      <Alert severity="warning">{wor}</Alert>
+      <br /><br /> 
+      </div>  
     <h1 className='text-3xl font-bold text-white'>Login to your account.</h1>
     <h2 className='flex text-base font-bold text-gray-200'>Create your account &nbsp;<a onClick={() => navigate("/signup")} className='text-blue-500 underline cursor-pointer'>Signup</a></h2><br /><br />
     <form onSubmit={handleSubmit}>

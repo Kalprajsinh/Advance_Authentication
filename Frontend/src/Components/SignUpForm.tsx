@@ -18,18 +18,17 @@ const SignUpForm: React.FC<Props> = ({ setSteps }) => {
     e.preventDefault();
     const steps: string[] = [];
 
-    if (password !== confirmPassword) {
-      alert('Passwords do not match!');
-      return;
-    }
-
     try {
       const response = await axios.post('http://localhost:3000/aa/signup', { name, email, password });
 
-      if (response.status === 400) {
-        steps.push('❌ User already exists');
+      if (response.status === 201) {
+        seterr("User already exists");
+        setTimeout(() => {
+          seterr("");
+        } , 3000)
       } else if (response.status === 401 || response.status === 500) {
         steps.push('❌ Error creating user');
+        navigate('/signup/backend');
       } else if (response.status === 200) {
         steps.push('🔑 Password matched with confirm password');
         steps.push('📤 Posted user information to backend /signup Router');
@@ -45,7 +44,8 @@ const SignUpForm: React.FC<Props> = ({ setSteps }) => {
         navigate('/signup/backend');
       }
     } catch (error) {
-      steps.push('❌ Error signing up');
+      steps.push(`❌ Error signing up ${error}`);
+      navigate('/signup/backend');
       console.error('Error signing up:', error);
     }
 
@@ -58,13 +58,15 @@ const SignUpForm: React.FC<Props> = ({ setSteps }) => {
   return (
     <div className=' flex justify-center h-2/3 items-center'>
       <div className='w-1/2'>
-      <Alert className={err === "" ? 'invisible' : ''} severity="error">{err}</Alert>
-      <br /><br />
+      <div style={{ display: err === "" ? 'none' : '' }}>
+      <Alert severity="error">{err}</Alert>
+      <br /><br /> 
+      </div>
         <h1 className='text-3xl font-bold text-white'>Create new account.</h1>
         <h2 className='flex text-base font-bold text-gray-200'>Already have account?&nbsp;<a onClick={() => navigate("/login")} className='text-blue-500 underline cursor-pointer'>Login</a></h2><br /><br />
-        <form onSubmit={(e) => {
-            e.preventDefault(); // Prevent default form submission
-            
+        <form onSubmit={
+          (e) => {
+            e.preventDefault();
             if (password.length < 6) {
               seterr("Password length must be at least 6 characters");
               setTimeout(() => {
@@ -76,9 +78,10 @@ const SignUpForm: React.FC<Props> = ({ setSteps }) => {
                 seterr("");
               } , 3000)
             } else {
-              handleSubmit 
+              handleSubmit(e);
             }
-          }}>
+          } 
+          }>
           <div className='border gap-4 rounded-lg h-10'>
             <label className='text-gray-500 font-mono ml-4'><i className="fa fa-user text-2xl"></i></label>&nbsp;&nbsp;&nbsp;
             <input className='bg-transparent text-white font-bold text-lg w-8/12 h-full' placeholder="Enter Name" type="text" value={name} onChange={(e) => setname(e.target.value)} required />

@@ -27,7 +27,7 @@ async function Login(req, res) {
         const user = await User.findOne({ email });
 
         if (!user) {
-            return res.status(404).send("User not found");
+            return res.status(201).send("User not found");
         }
 
         // Compare passwords
@@ -35,7 +35,7 @@ async function Login(req, res) {
         console.log("Password Match:", passwordMatch);
 
         if (!passwordMatch) {
-            return res.status(401).send("Invalid password");
+            return res.status(202).send("Invalid password");
         }
 
         // Generate tokens
@@ -55,7 +55,7 @@ async function Login(req, res) {
             res.cookie('accessToken', accessToken, { httpOnly: true, secure: true, sameSite: 'Strict' });
             res.cookie('refreshToken', refreshToken, { httpOnly: true, secure: true, sameSite: 'Strict' });     
         } catch (error) {
-            if (err) return res.sendStatus(403).send("error in sent Token try again")
+            if (err) return res.sendStatus(203).send("error in sent Token try again")
         }
         res.status(200).send("Login successful");
     } catch (err) {
