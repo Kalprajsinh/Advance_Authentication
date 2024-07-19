@@ -26,14 +26,14 @@ function App() {
         <BrowserRouter>
           <Routes>
             <Route path="/" element={<Main />} />
-            <Route path="/login" element={<LoginForm setloginsteps={setloginsteps} />} />
+            <Route path="/login" element={<LoginForm setloginsteps={setloginsteps} setlbuysteps={setlbuysteps}/>} />
             <Route path="/login/backend" element={<Loginbackend loginsteps={loginsteps} buysteps={buysteps} />} />
-            <Route path="/signup" element={<SignUpForm setSteps={setSteps} />} />
+            <Route path="/signup" element={<SignUpForm setSteps={setSteps}/>} />
             <Route path="/signup/backend" element={<Signupbackend steps={steps} />} />
           </Routes>
           <br /><br />
           <div className="flex justify-center gap-5 mt-7">
-            <Button setlbuysteps={setlbuysteps} />
+            <Button setlbuysteps={setlbuysteps} setloginsteps={setloginsteps}/>
           </div>
         </BrowserRouter>
       </div>

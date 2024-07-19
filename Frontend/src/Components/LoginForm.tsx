@@ -5,18 +5,18 @@ import Alert from '@mui/material/Alert';
 
 interface Props {
   setloginsteps: React.Dispatch<React.SetStateAction<string[]>>;
+  setlbuysteps: React.Dispatch<React.SetStateAction<string[]>>;
 }
 
-const LoginForm: React.FC<Props> = ({ setloginsteps }) => {
+const LoginForm: React.FC<Props> = ({ setloginsteps,setlbuysteps }) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const navigate = useNavigate();
-
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     const steps = []; 
   try {
-    const response = await axios.post('http://localhost:3000/aa/login', { email, password });
+    const response = await axios.post('https://advance-authentication-2.onrender.com/aa/login', { email, password });
     steps.push('📤 Posted user information to backend /login Router');
 
     if (response.status === 201) {
@@ -71,6 +71,9 @@ const LoginForm: React.FC<Props> = ({ setloginsteps }) => {
   // Optionally, you can display the steps to the user here
   // For example, by setting them in a state and showing them in the UI
   setloginsteps(steps);
+
+  const arr: string[] = [];
+  setlbuysteps(arr)
   };
 
   const [err,seterr] = useState("");

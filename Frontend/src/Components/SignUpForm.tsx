@@ -19,7 +19,7 @@ const SignUpForm: React.FC<Props> = ({ setSteps }) => {
     const steps: string[] = [];
 
     try {
-      const response = await axios.post('http://localhost:3000/aa/signup', { name, email, password });
+      const response = await axios.post('https://advance-authentication-2.onrender.com/aa/signup', { name, email, password });
 
       if (response.status === 201) {
         seterr("User already exists");

@@ -8,7 +8,7 @@ function Main() {
   useEffect(() => {
     const fetchIP = async () => {
       try {
-        const response = await axios.get('http://localhost:3000/aa/ip');
+        const response = await axios.get('https://advance-authentication-2.onrender.com/aa/ip');
         setIp(response.data.ip);
       } catch (error) {
         console.error("Error fetching the IP address: ", error);

@@ -5,9 +5,10 @@ import { useState } from 'react';
 axios.defaults.withCredentials = true;
 interface Props {
   setlbuysteps: React.Dispatch<React.SetStateAction<string[]>>;
+  setloginsteps: React.Dispatch<React.SetStateAction<string[]>>;
 }
 
-const Button: React.FC<Props> = ({ setlbuysteps }) => {
+const Button: React.FC<Props> = ({ setlbuysteps,setloginsteps }) => {
   const navigate = useNavigate();
   const location = useLocation(); 
   const [user, setuser] = useState(null);
@@ -29,7 +30,7 @@ const Button: React.FC<Props> = ({ setlbuysteps }) => {
     const refreshTokenValue = getCookieValue('refreshToken');
       if (refreshTokenValue == false) {
         try {
-          const response = await axios.post('http://localhost:3000/aa/access');
+          const response = await axios.post('https://advance-authentication-2.onrender.com/aa/access');
           steps.push('🍪 Posted cookie to backend /access Router');
     
           if (response.status === 401) {
@@ -50,7 +51,7 @@ const Button: React.FC<Props> = ({ setlbuysteps }) => {
     
           try {
             // Access token is invalid, attempt to refresh it
-            const refreshResponse = await axios.post('http://localhost:3000/aa/refresh');
+            const refreshResponse = await axios.post('https://advance-authentication-2.onrender.com/aa/refresh');
             steps.push('❌ Access Token not retrieved');
             steps.push('♻️ access token expire, posted cookie to backend /refresh Router');
             if (refreshResponse.status === 200) {
@@ -62,7 +63,7 @@ const Button: React.FC<Props> = ({ setlbuysteps }) => {
               steps.push('🍪 Sent cookie to client side with httpOnly: true, secure: true');
               steps.push('👤 User is valid ✅');
               // Refresh was successful, retry the buy now action
-              await axios.post('http://localhost:3000/aa/access');
+              await axios.post('https://advance-authentication-2.onrender.com/aa/access');
             } else if (refreshResponse.status === 401) {
               steps.push('❌ Refresh token not retrieved, please retry...');
               console.error('Refresh token not retrieved');
@@ -81,7 +82,9 @@ const Button: React.FC<Props> = ({ setlbuysteps }) => {
             steps.push('❌ Access Token not retrieved !');
             steps.push('❌ refresh token not retrieved !');
             // Refresh token is invalid, redirect to login
-            navigate('/login');
+            // navigate('/login');
+            const aerr: string[] = [];
+            setloginsteps(aerr)
           }
         }
       } else {
@@ -92,7 +95,7 @@ const Button: React.FC<Props> = ({ setlbuysteps }) => {
 
   async function Logout(){
     try {
-      const response = await axios.post('http://localhost:3000/aa/logout');
+      const response = await axios.post('https://advance-authentication-2.onrender.com/aa/logout');
       console.log(response.data);
       // Redirect to home page after successful signup
       navigate('/');
