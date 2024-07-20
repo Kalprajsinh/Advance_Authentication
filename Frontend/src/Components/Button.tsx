@@ -15,23 +15,25 @@ const Button: React.FC<Props> = ({ setlbuysteps, setloginsteps }) => {
   const [user, setuser] = useState(null);
   const steps: string[] = [];
 
-  function getCookieValue(cookieName: string) {
-    const cookies = document.cookie.split(';');
-    for (let cookie of cookies) {
-        const [name, value] = cookie.trim().split('=');
-        if (name === cookieName) {
-            return decodeURIComponent(value);
-        }
-    }
-    steps.push('☑️ Check cookie value');
-    return false;
-  }
+  // function getCookieValue(cookieName: string) {
+  //   const cookies = document.cookie.split(';');
+  //   for (let cookie of cookies) {
+  //       const [name, value] = cookie.trim().split('=');
+  //       if (name === cookieName) {
+  //           return decodeURIComponent(value);
+  //       }
+  //   }
+  //   steps.push('☑️ Check cookie value');
+  //   return false;
+  // }
 
   const handleBuyNowClick = async () => {
     try {
+      console.log(user)
       const response = await axios.post('https://advance-authentication-2.onrender.com/aa/access', {}, {
         withCredentials: true
       });
+      steps.push('☑️ Check cookie value');
       steps.push('🍪 Posted cookie to backend /access Router');
 
       if (response.status === 401) {
