@@ -1,6 +1,15 @@
 const jwt = require('jsonwebtoken');
 require('dotenv').config();
 const User = require("../database/data");
+const express = require('express');
+const app = express();
+
+const cors = require('cors');
+
+app.use(cors({
+    origin: 'http://localhost:5173', 
+    credentials: true
+}));
 
 const ACCESS_TOKEN_SECRET = process.env.ACCESS_TOKEN_SECRET;
 

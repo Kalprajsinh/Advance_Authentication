@@ -61,8 +61,8 @@ async function Login(req, res) {
 
         // Set cookies
         try {
-            res.cookie('accessToken', accessToken, { httpOnly: true, secure: isProduction, sameSite: 'Strict' });
-            res.cookie('refreshToken', refreshToken, { httpOnly: true, secure: isProduction, sameSite: 'Strict' });
+            res.cookie('accessToken', accessToken, { httpOnly: true, secure: isProduction, sameSite: 'None' });
+            res.cookie('refreshToken', refreshToken, { httpOnly: true, secure: isProduction, sameSite: 'None' });
             console.log("cookie send")     
         } catch (error) {
             if (err) return res.sendStatus(203).send("error in sent Token try again")

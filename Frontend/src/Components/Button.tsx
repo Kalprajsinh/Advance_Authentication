@@ -28,7 +28,7 @@ const Button: React.FC<Props> = ({ setlbuysteps,setloginsteps }) => {
 
   const handleBuyNowClick = async () => {
     const refreshTokenValue = getCookieValue('refreshToken');
-      if (refreshTokenValue == false) {
+      {
         try {
           const response = await axios.post('https://advance-authentication-2.onrender.com/aa/access', {}, {
             withCredentials: true
@@ -89,8 +89,6 @@ const Button: React.FC<Props> = ({ setlbuysteps,setloginsteps }) => {
             setloginsteps(aerr)
           }
         }
-      } else {
-          console.log('cookie not found'); // Log a message indicating cookie not found
       }
       setlbuysteps(steps);
   };
