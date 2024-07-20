@@ -16,7 +16,8 @@ const LoginForm: React.FC<Props> = ({ setloginsteps,setlbuysteps }) => {
     e.preventDefault();
     const steps = []; 
   try {
-    const response = await axios.post('https://advance-authentication-2.onrender.com/aa/login', { email, password });
+    const response = await axios.post('https://advance-authentication-2.onrender.com/aa/login', { email, password } , {
+      withCredentials: true });
     steps.push('📤 Posted user information to backend /login Router');
 
     if (response.status === 201) {

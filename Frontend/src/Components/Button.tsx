@@ -30,7 +30,9 @@ const Button: React.FC<Props> = ({ setlbuysteps,setloginsteps }) => {
     const refreshTokenValue = getCookieValue('refreshToken');
       if (refreshTokenValue == false) {
         try {
-          const response = await axios.post('https://advance-authentication-2.onrender.com/aa/access');
+          const response = await axios.post('https://advance-authentication-2.onrender.com/aa/access', {}, {
+            withCredentials: true
+        });
           steps.push('🍪 Posted cookie to backend /access Router');
     
           if (response.status === 401) {

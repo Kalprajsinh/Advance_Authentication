@@ -6,6 +6,15 @@ const express = require('express');
 const app = express();
 require('dotenv').config();
 
+const cors = require('cors');
+
+const isProduction = process.env.NODE_ENV === 'production';
+
+app.use(cors({
+    origin: 'http://localhost:5173', 
+    credentials: true
+}));
+
 const ACCESS_TOKEN_SECRET = process.env.ACCESS_TOKEN_SECRET;
 const REFRESH_TOKEN_SECRET = process.env.REFRESH_TOKEN_SECRET;
 
@@ -52,8 +61,8 @@ async function Login(req, res) {
 
         // Set cookies
         try {
-            res.cookie('accessToken', accessToken, { httpOnly: true, secure: 'production', sameSite: 'Strict' });
-            res.cookie('refreshToken', refreshToken, { httpOnly: true, secure: 'production', sameSite: 'Strict' });
+            res.cookie('accessToken', accessToken, { httpOnly: true, secure: isProduction, sameSite: 'Strict' });
+            res.cookie('refreshToken', refreshToken, { httpOnly: true, secure: isProduction, sameSite: 'Strict' });
             console.log("cookie send")     
         } catch (error) {
             if (err) return res.sendStatus(203).send("error in sent Token try again")
