@@ -7,7 +7,7 @@ const app = express();
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cors({
-    origin: 'http://localhost:5173',
+    origin: 'https://advance-authentication.pages.dev',
     credentials: true // Enable credentials
   }));
 app.use("/aa" , routers)
