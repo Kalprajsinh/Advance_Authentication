@@ -40,7 +40,7 @@ connect to  data base
 
 const mongoose = require("mongoose");
 
-mongoose.connect('mongodb+srv://kalpraj51:dYt7CIyDXwi6gZbL@cluster0.qfsnyra.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0', { useNewUrlParser: true, useUnifiedTopology: true })
+mongoose.connect('url', { useNewUrlParser: true, useUnifiedTopology: true })
 .then(() => console.log("Connected to Database"))
 .catch((error) => console.log("Error in Connecting to Database:", error));
 
