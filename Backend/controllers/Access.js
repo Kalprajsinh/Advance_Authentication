@@ -7,7 +7,7 @@ const app = express();
 const cors = require('cors');
 
 app.use(cors({
-    origin: 'https://advance-authentication.pages.dev', 
+    origin: 'https://advanceauthentication.pages.dev', 
     credentials: true
 }));
 
