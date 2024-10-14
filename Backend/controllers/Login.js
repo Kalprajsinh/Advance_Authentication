@@ -11,7 +11,7 @@ const cors = require('cors');
 const isProduction = process.env.NODE_ENV === 'production';
 
 app.use(cors({
-    origin: 'https://advance-authentication.pages.dev', 
+    origin: 'https://advanceauthentication.pages.dev', 
     credentials: true
 }));
 
