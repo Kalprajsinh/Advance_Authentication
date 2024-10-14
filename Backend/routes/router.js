@@ -2,6 +2,8 @@ const express = require("express");
 const SingUp = require("../controllers/Signup");
 const Login = require("../controllers/Login");
 const { zodsignup, zodlogin } = require("../middlewars/zod");
+const Refresh = require("../controllers/Refresh")
+const Access = require("../controllers/Access")
 const axios = require('axios');
 const cookieParser = require("cookie-parser")
 
