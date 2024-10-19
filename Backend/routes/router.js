@@ -28,8 +28,8 @@ const loginLimiter = rateLimit({
 router.post('/signup', zodsignup, SingUp);
 router.post('/login', loginLimiter, zodlogin, Login);
 router.post('/logout', (req, res) => {
-  res.clearCookie('accessToken', { httpOnly: true, secure: true, sameSite: 'Strict' });
-  res.clearCookie('refreshToken', { httpOnly: true, secure: true, sameSite: 'Strict' });
+  res.clearCookie('accessToken', { httpOnly: true, secure: true,path: '/'});
+  res.clearCookie('refreshToken', { httpOnly: true, secure: true,path: '/' });
   res.status(200).send('Logged out successfully');
 });
 
