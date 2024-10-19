@@ -8,8 +8,19 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cors({
     origin: 'https://advanceauthentication.pages.dev',
-    credentials: true // Enable credentials
+    credentials: true 
   }));
+
+const rateLimit = require('express-rate-limit');
+
+const limiter = rateLimit({
+    windowMs: 1 * 60 * 1000, 
+    max: 100, 
+    message: 'Too many requests from this IP, please try again later.',
+});
+
+app.use(limiter);
+
 app.use("/aa" , routers)
 
 app.all('*', (req, res) => {

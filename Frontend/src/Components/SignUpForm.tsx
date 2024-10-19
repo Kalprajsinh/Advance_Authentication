@@ -12,15 +12,17 @@ const SignUpForm: React.FC<Props> = ({ setSteps }) => {
   const [password, setPassword] = useState('');
   const [name, setname] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
+  const [strongPasswordRegex, setstrongPasswordRegex] = useState(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@#$!%*?&])[A-Za-z\d@#$!%*?&]{8,}$/);
   const navigate = useNavigate();
-
+  
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     const steps: string[] = [];
-
+    
     try {
-      const response = await axios.post('https://advance-authentication-2.onrender.com/aa/signup', { name, email, password });
-
+      setstrongPasswordRegex(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/);
+      const response = await axios.post('https://advance-authentication.onrender.com/aa/signup', { name, email, password });
+      
       if (response.status === 201) {
         seterr("User already exists");
         setTimeout(() => {
@@ -48,13 +50,13 @@ const SignUpForm: React.FC<Props> = ({ setSteps }) => {
       navigate('/signup/backend');
       console.error('Error signing up:', error);
     }
-
+    
     // Update parent component state with steps
     setSteps(steps);
   };
-
+  
   const [err,seterr] = useState("");
-
+  
   return (
     <div className=' flex justify-center h-2/3 items-center'>
       <div className='w-1/2'>
@@ -64,43 +66,58 @@ const SignUpForm: React.FC<Props> = ({ setSteps }) => {
       </div>
         <h1 className='text-3xl font-bold text-white'>Create new account.</h1>
         <h2 className='flex text-base font-bold text-gray-200'>Already have account?&nbsp;<a onClick={() => navigate("/login")} className='text-blue-500 underline cursor-pointer'>Login</a></h2><br /><br />
-        <form onSubmit={
-          (e) => {
-            e.preventDefault();
-            if (password.length < 6) {
-              seterr("Password length must be at least 6 characters");
-              setTimeout(() => {
-                seterr("");
-              } , 3000)
-            } else if (password !== confirmPassword) {
-              seterr("Passwords do not match");
-              setTimeout(() => {
-                seterr("");
-              } , 3000)
-            } else {
-              handleSubmit(e);
-            }
-          } 
-          }>
-          <div className='border gap-4 rounded-lg h-10'>
-            <label className='text-gray-500 font-mono ml-4'><i className="fa fa-user text-2xl"></i></label>&nbsp;&nbsp;&nbsp;
-            <input className='bg-transparent text-white font-bold text-lg w-8/12 h-full' placeholder="Enter Name" type="text" value={name} onChange={(e) => setname(e.target.value)} required />
-          </div>
-          <br />
-          <div className='border gap-4 rounded-lg h-10'>
-            <label className='text-gray-300 font-mono ml-4'><i className="fa fa-user text-2xl"></i></label>&nbsp;&nbsp;&nbsp;
-            <input className='bg-transparent text-white font-bold text-lg w-8/12 h-full' placeholder="Enter email" type="email" value={email} onChange={(e) => setEmail(e.target.value)} required />
-          </div><br />
-          <div className='border gap-4 rounded-lg h-10'>
-            <label className='text-gray-300 font-mono ml-4'><i className="fa fa-lock text-2xl"></i></label>&nbsp;&nbsp;&nbsp;
-            <input className='bg-transparent text-white font-bold text-lg w-8/12 h-full' placeholder="Enter password" type="password" value={password} onChange={(e) => setPassword(e.target.value)} required />
-          </div><br />
-          <div className='border gap-4 rounded-lg h-10'>
-            <label className='text-gray-300 font-mono ml-4'><i className="fa fa-check text-xl"></i></label>&nbsp;&nbsp;&nbsp;
-            <input className='bg-transparent text-white font-bold text-lg w-8/12 h-full' placeholder="Confirm password" type="password" value={confirmPassword} onChange={(e) => setConfirmPassword(e.target.value)} required />
-          </div><br />
-          <button className="text-white bg-gradient-to-r from-blue-500 via-blue-600 to-blue-700 hover:bg-gradient-to-br focus:ring-1 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 dark:shadow-lg dark:shadow-blue-950 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2" type="submit">Sign Up</button>
-        </form>
+        <form onSubmit={(e) => {
+  e.preventDefault();
+
+  if (password.length < 8) {
+    seterr("Password length must be at least 8 characters");
+    setTimeout(() => seterr(""), 3000);
+  } else if (!strongPasswordRegex.test(password)) {
+    seterr("Password must include at least one uppercase letter, one lowercase letter, one number, and one special character");
+    setTimeout(() => seterr(""), 5000);
+  } else if (password !== confirmPassword) {
+    seterr("Passwords do not match");
+    setTimeout(() => seterr(""), 3000);
+  } else {
+    handleSubmit(e);
+  }
+}}>
+
+  <div className='border gap-4 rounded-lg h-10'>
+    <label className='text-gray-500 font-mono ml-4'><i className="fa fa-user text-2xl"></i></label>&nbsp;&nbsp;&nbsp;
+    <input className='bg-transparent text-white font-bold text-lg w-8/12 h-full' placeholder="Enter Name" type="text" value={name} onChange={(e) => setname(e.target.value)} required />
+  </div>
+  <br />
+  
+  <div className='border gap-4 rounded-lg h-10'>
+    <label className='text-gray-300 font-mono ml-4'><i className="fa fa-envelope text-xl"></i></label>&nbsp;&nbsp;&nbsp;
+    <input className='bg-transparent text-white font-bold text-lg w-8/12 h-full' placeholder="Enter email" type="email" value={email} onChange={(e) => setEmail(e.target.value)} required />
+  </div>
+  <br />
+  
+  <div className='border gap-4 rounded-lg h-10 flex items-center'>
+    <label className='text-gray-300 font-mono ml-4'><i className="fa fa-lock text-2xl"></i></label>
+    <input className='bg-transparent text-white font-bold text-lg w-8/12 h-full' placeholder="Enter password" type="password" value={password} onChange={(e) => setPassword(e.target.value)} required />
+    {
+    strongPasswordRegex.test(password) ? (
+      <i className="fa fa-check text-green-500 text-xl ml-2"></i>
+    ) : (
+      <i className="fa fa-times text-red-500 text-xl ml-2">&nbsp; Password not valid</i>
+    )
+  }
+  </div>
+  <br />
+  
+  <div className='border gap-4 rounded-lg h-10'>
+    <label className='text-gray-300 font-mono ml-4'><i className="fa fa-check text-xl"></i></label>&nbsp;&nbsp;&nbsp;
+    <input className='bg-transparent text-white font-bold text-lg w-8/12 h-full' placeholder="Confirm password" type="password" value={confirmPassword} onChange={(e) => setConfirmPassword(e.target.value)} required />
+  </div>
+  <br />
+  
+  <button className="text-white bg-gradient-to-r from-blue-500 via-blue-600 to-blue-700 hover:bg-gradient-to-br focus:ring-1 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 dark:shadow-lg dark:shadow-blue-950 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2" type="submit">Sign Up</button>
+
+</form>
+
       </div>
     </div>
   );

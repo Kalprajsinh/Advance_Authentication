@@ -29,7 +29,6 @@ async function Access(req, res) {
         res.status(200).json({
             name: userInfo.name,
             email: userInfo.email
-            // Add any other user info you want to send
         });
     });
 }

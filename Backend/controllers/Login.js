@@ -30,7 +30,8 @@ app.use(cookieParser());
 app.use(express.json());
 
 async function Login(req, res) {
-    const { email, password } = req.body;
+    const { email } = req.body;
+    const { password } = req.body;
 
     try {
         const user = await User.findOne({ email });

@@ -30,7 +30,7 @@ const Button: React.FC<Props> = ({ setlbuysteps, setloginsteps }) => {
   const handleBuyNowClick = async () => {
     try {
       console.log(user)
-      const response = await axios.post('https://advance-authentication-2.onrender.com/aa/access', {}, {
+      const response = await axios.post('https://advance-authentication.onrender.com/aa/access', {}, {
         withCredentials: true
       });
       steps.push('☑️ Check cookie value');
@@ -52,7 +52,7 @@ const Button: React.FC<Props> = ({ setlbuysteps, setloginsteps }) => {
       console.error('Access error:', accessError);
 
       try {
-        const refreshResponse = await axios.post('https://advance-authentication-2.onrender.com/aa/refresh');
+        const refreshResponse = await axios.post('https://advance-authentication.onrender.com/aa/refresh');
         steps.push('❌ Access Token not retrieved');
         steps.push('♻️ access token expire, posted cookie to backend /refresh Router');
         if (refreshResponse.status === 200) {
@@ -63,7 +63,7 @@ const Button: React.FC<Props> = ({ setlbuysteps, setloginsteps }) => {
           steps.push('🔄 Generated new JWT access token successfully');
           steps.push('🍪 Sent cookie to client side with httpOnly: true, secure: true');
           steps.push('👤 User is valid ✅');
-          await axios.post('https://advance-authentication-2.onrender.com/aa/access');
+          await axios.post('https://advance-authentication.onrender.com/aa/access');
         } else if (refreshResponse.status === 401) {
           steps.push('❌ Refresh token not retrieved, please retry...');
           console.error('Refresh token not retrieved');
@@ -89,7 +89,7 @@ const Button: React.FC<Props> = ({ setlbuysteps, setloginsteps }) => {
 
   async function Logout() {
     try {
-      const response = await axios.post('https://advance-authentication-2.onrender.com/aa/logout');
+      const response = await axios.post('https://advance-authentication.onrender.com/aa/logout');
       console.log(response.data);
       navigate('/');
     } catch (error) {

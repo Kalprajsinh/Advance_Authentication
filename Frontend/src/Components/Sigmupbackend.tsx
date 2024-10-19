@@ -15,22 +15,22 @@ const Signupbackend: React.FC<Props> = ({ steps }) => {
       steps.forEach((s, index) => {
         const timeout = window.setTimeout(() => {
           setDisplayedSteps(prevSteps => [...prevSteps, s]);
-        }, (index + 1) * 900);
+        }, (index + 1) * 900); // Display each step with a delay
         timeouts.push(timeout);
       });
     };
 
     displaySteps();
 
+    // Clean up timeouts on unmount
     return () => {
-      timeouts.forEach(timeout => {
-        window.clearTimeout(timeout);
-      });
-      setDisplayedSteps([]);
+      timeouts.forEach(timeout => window.clearTimeout(timeout));
+      // Do not reset displayedSteps here
     };
   }, [steps]);
 
   useEffect(() => {
+    // Scroll to the bottom when new steps are added
     if (scrollContainerRef.current) {
       scrollContainerRef.current.scrollTop = scrollContainerRef.current.scrollHeight;
     }
