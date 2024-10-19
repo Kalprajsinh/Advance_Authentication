@@ -3,16 +3,9 @@ import axios from 'axios';
 import { Offline, Online } from "react-detect-offline";
 import '../App.css';
 
-interface User {
-  name: string;
-  email: string;
-}
-
 function Main() {
   const [ip, setIp] = useState('');
   const [deviceType, setDeviceType] = useState('');
-  const [user, setUser] = useState<User | null>(null); 
-  const [loggedIn, setLoggedIn] = useState(false); 
 
   useEffect(() => {
     const userAgent = navigator.userAgent.toLowerCase();
@@ -54,8 +47,6 @@ function Main() {
             withCredentials: true
           });
           if (res1.status === 200) {
-            setUser(res1.data); // Save user data (name and email)
-            setLoggedIn(true);  // Set loggedIn to true
           }
         } catch (error) {
           try {
@@ -63,13 +54,12 @@ function Main() {
               withCredentials: true
             });
             if (refreshResponse.status === 200) {
-              setUser(refreshResponse.data); // Save user data (name and email)
-              setLoggedIn(true);  // Set loggedIn to true
             }
           } catch (error) {
             console.error("Error refreshing token: ", error);
           }
         }
+
       } catch (error) {
         console.error("Error fetching the IP address: ", error);
       }
@@ -82,13 +72,6 @@ function Main() {
       <div>
         <div className="h-1/2 flex justify-center gap-5">
           <div className="pl-8 bg-black bg-opacity-40 w-3/4 text-base font-bold text-white rounded-lg p-5 font-mono">
-            {/* Display user info if logged in */}
-            {loggedIn && user ? (
-                <div className='flex text-xs sm:text-base'>&gt; User Loggedin - <p className='text-green-500'>&nbsp;True &nbsp;{user.email}</p></div>
-            ) : (
-              <div className='flex text-xs sm:text-base'>&gt; User Loggedin - <p className='text-red-500'>&nbsp;False</p></div>
-            )}
-
             <div className='overflow-y-scroll h-5/6 overflow-x-hidden'>
               {ip && (
                 <div className='flex text-xs sm:text-base'>&gt; Device IP address - {ip}</div>
@@ -99,12 +82,10 @@ function Main() {
               <Online><div className='flex text-xs sm:text-base'>&gt; User is <p className='text-green-500'>&nbsp;online</p></div></Online>
               <Offline><div className='flex text-xs sm:text-base'>&gt; User is <p className='text-red-500'>&nbsp;offline</p></div></Offline>
               <br /><br />
-            {!loggedIn && (
               <div className="text-xs sm:text-base text-blue-300 flex items-center gap-2 select-none">
                 To see more backend process, please Login or Signup
                 <p className='text-2xl'>→</p>
               </div>
-            )}
             </div>
             <br />
           </div>

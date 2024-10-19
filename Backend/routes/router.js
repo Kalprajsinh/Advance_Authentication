@@ -7,23 +7,13 @@ const Access = require("../controllers/Access")
 const cors = require('cors');
 const helmet = require('helmet');
 const cookieParser = require("cookie-parser")
-const rateLimit = require('express-rate-limit');
 const app = express();
 
 app.use(cors({ origin: 'https://advanceauthentication.pages.dev', credentials: true }));
 
-
 app.use(helmet());
 app.use(express.json());
 app.use(cookieParser());
-
-const router = express.Router();
-
-const loginLimiter = rateLimit({
-  windowMs: 10 * 60 * 1000, 
-  max: 5, 
-  message: 'Too many login attempts, please try again later.',
-});
 
 router.post('/signup', zodsignup, SingUp);
 router.post('/login', loginLimiter, zodlogin, Login);
