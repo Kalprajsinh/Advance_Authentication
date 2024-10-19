@@ -11,12 +11,15 @@ const app = express();
 
 app.use(cors({ origin: 'https://advanceauthentication.pages.dev', credentials: true }));
 
+
 app.use(helmet());
 app.use(express.json());
 app.use(cookieParser());
 
+const router = express.Router();
+
 router.post('/signup', zodsignup, SingUp);
-router.post('/login', loginLimiter, zodlogin, Login);
+router.post('/login', zodlogin, Login);
 router.post('/logout', (req, res) => {
   res.clearCookie('accessToken', { httpOnly: true, secure: true,path: '/'});
   res.clearCookie('refreshToken', { httpOnly: true, secure: true,path: '/' });

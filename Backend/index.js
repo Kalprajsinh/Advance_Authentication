@@ -11,8 +11,6 @@ app.use(cors({
     credentials: true 
   }));
 
-app.use(limiter);
-
 app.use("/aa" , routers)
 
 app.all('*', (req, res) => {
